@@ -11,13 +11,13 @@ import './index.css';
  * 
  * This ensures config is available before any component renders.
  */
-async function startApp() {
+async function startApp(): Promise<void> {
     try {
         await loadConfig();
-        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+        ReactDOM.createRoot(document.getElementById('root')!).render(<App />);
     } catch (error) {
         console.error('Failed to start app:', error);
-        document.getElementById('root').innerHTML =
+        document.getElementById('root')!.innerHTML =
             '<div style="color: red; padding: 20px;">Failed to load configuration</div>';
     }
 }

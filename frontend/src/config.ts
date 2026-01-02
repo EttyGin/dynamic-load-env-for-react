@@ -9,13 +9,17 @@
  * It's served as a static file, loaded after the app starts.
  */
 
-let config = null;
+interface Config {
+    BACKEND_URL: string;
+}
+
+let config: Config | null = null;
 
 /**
  * Fetches config.json from the public folder.
  * This happens BEFORE React renders the app.
  */
-export async function loadConfig() {
+export async function loadConfig(): Promise<Config> {
     if (config) {
         return config;
     }
@@ -31,7 +35,7 @@ export async function loadConfig() {
         console.error('Error loading config:', error);
         // Fallback to default if config.json is missing
         config = {
-            BACKEND_URL: NaN,
+            BACKEND_URL: '',
         };
         return config;
     }
@@ -40,7 +44,7 @@ export async function loadConfig() {
 /**
  * Gets the currently loaded configuration
  */
-export function getConfig() {
+export function getConfig(): Config {
     if (!config) {
         throw new Error(
             'Config not loaded yet. Make sure loadConfig() was called first.'

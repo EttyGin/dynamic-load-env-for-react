@@ -4,15 +4,15 @@ import { getConfig } from './config';
 /**
  * App component that fetches and displays the backend response
  */
-function App() {
-    const [message, setMessage] = useState(null);
-    const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [backendUrl, setBackendUrl] = useState('');
+function App(): React.ReactElement {
+    const [message, setMessage] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [backendUrl, setBackendUrl] = useState<string>('');
 
     useEffect(() => {
         // Fetch message from backend using the configured URL
-        async function fetchMessage() {
+        async function fetchMessage(): Promise<void> {
             try {
                 const config = getConfig();
                 setBackendUrl(config.BACKEND_URL);
@@ -24,7 +24,7 @@ function App() {
                 const data = await response.json();
                 setMessage(data.message);
             } catch (err) {
-                setError(err.message);
+                setError(err instanceof Error ? err.message : 'Unknown error');
             } finally {
                 setLoading(false);
             }
