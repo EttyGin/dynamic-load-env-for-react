@@ -17,7 +17,11 @@ function App(): React.ReactElement {
                 const config = getConfig();
                 setBackendUrl(config.BACKEND_URL);
 
-                const response = await fetch(`${config.BACKEND_URL}/api/hello`);
+                const response = await fetch(`${config.BACKEND_URL}/api/hello`, {
+                    headers: {
+                        'Authorization': `Bearer ${config.MASTER_API_KEY}`
+                    }
+                });
                 if (!response.ok) {
                     throw new Error(`Backend error: ${response.statusText}`);
                 }
@@ -46,10 +50,13 @@ function App(): React.ReactElement {
                 <p>
                     <strong>Backend URL:</strong> <code>{backendUrl}</code>
                 </p>
+                <p>
+                    <strong>Authentication:</strong> Bearer token from <code>config.json</code>
+                </p>
                 <p className="explanation">
-                    This URL comes from <code>config.json</code>, loaded at runtime.
+                    Both the Backend URL and API Key come from <code>config.json</code>, loaded at runtime.
                     <br />
-                    The React build itself contains NO hardcoded backend URL.
+                    The React build itself contains NO hardcoded backend URL or API key.
                 </p>
             </div>
 
@@ -65,22 +72,29 @@ function App(): React.ReactElement {
             </div>
 
             <div className="explanation-box">
-                <h3>Why This Works</h3>
+                <h3>How This Works</h3>
                 <ul>
                     <li>
                         <strong>Build:</strong> React is built once with `npm run build`
                     </li>
                     <li>
-                        <strong>Runtime:</strong> On app start, JavaScript fetches
-                        <code>config.json</code> (a static file, NOT bundled)
+                        <strong>Runtime Config:</strong> On app start, JavaScript fetches
+                        <code>config.json</code> (a static file, NOT bundled) which contains:
+                        <ul>
+                            <li>Backend URL</li>
+                            <li>API authentication key</li>
+                        </ul>
                     </li>
                     <li>
-                        <strong>Dynamic:</strong> Change <code>config.json</code> to point
-                        to different backends without rebuilding React
+                        <strong>Authentication:</strong> All API requests include the Bearer token in the Authorization header
                     </li>
                     <li>
-                        <strong>Same Build:</strong> One React build works with any backend
-                        URL
+                        <strong>Dynamic Deployment:</strong> Change <code>config.json</code> to point
+                        to different backends and API keys without rebuilding React
+                    </li>
+                    <li>
+                        <strong>One Build, Many Deployments:</strong> Same React build works with any backend
+                        URL and API key
                     </li>
                 </ul>
             </div>

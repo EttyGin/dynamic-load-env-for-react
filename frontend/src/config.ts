@@ -11,6 +11,7 @@
 
 interface Config {
     BACKEND_URL: string;
+    MASTER_API_KEY: string;
 }
 
 let config: Config | null = null;

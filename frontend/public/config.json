@@ -1,3 +1,4 @@
 {
-    "BACKEND_URL": "http://localhost:8000"
+    "BACKEND_URL": "http://localhost:8000",
+    "MASTER_API_KEY": "dev"
 }
